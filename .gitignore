@@ -1,0 +1,12 @@
+# Data Files
+*.csv
+
+# Python cache
+__pycache__/
+
+# Environment folders
+/venv/
+/env/
+
+# VS Code settings folder
+.vscode/
