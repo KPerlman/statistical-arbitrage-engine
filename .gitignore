@@ -3,10 +3,21 @@
 
 # Python cache
 __pycache__/
+*.pyc
 
 # Environment folders
 /venv/
 /env/
 
+# Generated plots and images
+*.png
+*.jpg
+*.jpeg
+
 # VS Code settings folder
 .vscode/
+
+# IDE and OS specific files
+.idea/
+.vscode/
+.DS_Store
