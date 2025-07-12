@@ -15,6 +15,7 @@ TICKER_B = "COST"
 WINDOW = 60  # Rolling window for z-score calc
 ENTRY_THRESHOLD = 2.0
 EXIT_THRESHOLD = 0.5
+COMMISSION = 0.001  # 0.1% commission per trade
 
 
 def backtest_strategy(file_path: str, ticker_a: str, ticker_b: str):
@@ -71,16 +72,24 @@ def backtest_strategy(file_path: str, ticker_a: str, ticker_b: str):
         daily_returns[ticker_a] - hedge_ratio * daily_returns[ticker_b]
     )
 
+    # Get transaction costs
+    # Trade occurs when position changes from previous day
+    trades = positions.diff().abs()
+    transaction_costs = trades * COMMISSION
+
+    # Subtract costs from portfolio returns
+    net_portfolio_returns = portfolio_returns - transaction_costs
+
     # Get cumulative returns (equity curve)
-    cumulative_returns = (1 + portfolio_returns).cumprod()
+    cumulative_returns = (1 + net_portfolio_returns).cumprod()
 
     # Compound annual growth rate
     total_return = cumulative_returns.iloc[-1] - 1
     num_years = len(cumulative_returns) / 252  # Assume 252 trading days/year
     cagr = (cumulative_returns.iloc[-1]) ** (1 / num_years) - 1
-
-    # Sharpe ratio (assume risk-free rate is 0)
-    sharpe_ratio = (portfolio_returns.mean() / portfolio_returns.std()) * np.sqrt(252)
+    sharpe_ratio = (
+        net_portfolio_returns.mean() / net_portfolio_returns.std()
+    ) * np.sqrt(252)
 
     # Max drawdown
     cumulative_max = cumulative_returns.cummax()
@@ -109,6 +118,7 @@ def backtest_strategy(file_path: str, ticker_a: str, ticker_b: str):
     total_return = cumulative_returns.iloc[-1] - 1
     print("\n--- Backtest Results ---")
     print(f"Pair: ({ticker_a}, {ticker_b})")
+    print(f"Total Trades: {int(trades.sum())}")
     print(f"Total Strategy Return: {total_return:.2%}")
     print(f"Compound Annual Growth Rate (CAGR): {cagr:.2%}")
     print(f"Sharpe Ratio: {sharpe_ratio:.2f}")
