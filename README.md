@@ -40,6 +40,7 @@ The project is a pipeline of scripts, each handling one part of the process:
 
 This is still a work in progress. Here's what I'm planning to work on next:
 
+* [x] ~~Build an event-driven backtester to simulate performance.~~
 * \[ \] **Improve the Backtester:**
 
   * \[ \] Add a more realistic cost model (commissions, slippage).
