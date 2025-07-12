@@ -26,7 +26,7 @@ I'm mostly using this to learn more about time-series analysis, financial data, 
 
 The project is a pipeline of scripts, each handling one part of the process:
 
-1. `01_data_collection.py`: Fetches historical close prices for all S&P 500 tickers from Yahoo Finance and saves the clean data to a CSV.
+1. `01_data_collection.py`: Fetches historical close prices for all S&P 500 tickers from Yahoo Finance and saves the data to a CSV.
 
 2. `02_analyze_data.py`: Runs some basic exploratory data analysis (EDA) on the price data and generates a few plots (e.g., correlation matrix).
 
@@ -34,13 +34,19 @@ The project is a pipeline of scripts, each handling one part of the process:
 
 4. `04_plot_spread.py`: Takes a specific pair (e.g., the top result from the previous script) and plots its price spread and rolling z-score over time to visualize the mean-reversion behavior.
 
-5. `05_backtest_strategy.py`: Simulates a simple trading strategy on a given pair based on z-score entry/exit thresholds.
+5. `05_backtest_strategy.py`: A backtester that runs a trading simulation on the top N cointegrated pairs. It includes a simple transaction cost model and calculates key performance metrics (CAGR, Sharpe Ratio, Max Drawdown) for each pair.
+
+6. `06_optimize_strategy.py`: Takes the best-performing pair and runs a grid search to find the optimal lookback window and z-score threshold. It also outputs a heatmap based on the results.
 
 ### Next Steps & To-Do
 
 This is still a work in progress. Here's what I'm planning to work on next:
 
 * [x] ~~Build an event-driven backtester to simulate performance.~~
+* [x] ~~Build a simple backtester.~~
+* [x] ~~Add performance metrics (CAGR, Sharpe, Max Drawdown).~~
+* [x] ~~Include a basic transaction cost model.~~
+* [x] ~~Optimize strategy parameters (window, threshold).~~
 * \[ \] **Improve the Backtester:**
 
   * \[ \] Add a more realistic cost model (commissions, slippage).
@@ -49,9 +55,9 @@ This is still a work in progress. Here's what I'm planning to work on next:
 
 * \[ \] **Add More Performance Metrics:**
 
-  * \[x] ~~Calculate Sharpe Ratio, Max Drawdown, CAGR, etc.~~
+  * [ ] Implement a more robust portfolio manager to handle capital allocation.
 
-  * \[ \] Generate a tear sheet for backtest results.
+  * [ ] Add more sophisticated risk management (e.g., stop-loss based on spread divergence).
 
 * \[ \] **(Future Idea) Dynamic Modeling:**
 
