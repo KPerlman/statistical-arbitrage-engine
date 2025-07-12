@@ -31,7 +31,6 @@ def backtest_strategy(file_path: str, ticker_a: str, ticker_b: str):
     x = sm.add_constant(pair_prices[ticker_b])
     model = sm.OLS(y, x).fit()
     hedge_ratio = model.params[1]
-
     spread = pair_prices[ticker_a] - hedge_ratio * pair_prices[ticker_b]
 
     # Get z-score
@@ -56,7 +55,6 @@ def backtest_strategy(file_path: str, ticker_a: str, ticker_b: str):
     positions[short_entry] = -1
     positions[long_exit & (positions.shift(1) == 1)] = 0
     positions[short_exit & (positions.shift(1) == -1)] = 0
-
     # Forward-fill positions to hold through periods
     positions.ffill(inplace=True)
     positions.fillna(0, inplace=True)
@@ -75,6 +73,19 @@ def backtest_strategy(file_path: str, ticker_a: str, ticker_b: str):
 
     # Get cumulative returns (equity curve)
     cumulative_returns = (1 + portfolio_returns).cumprod()
+
+    # Compound annual growth rate
+    total_return = cumulative_returns.iloc[-1] - 1
+    num_years = len(cumulative_returns) / 252  # Assume 252 trading days/year
+    cagr = (cumulative_returns.iloc[-1]) ** (1 / num_years) - 1
+
+    # Sharpe ratio (assume risk-free rate is 0)
+    sharpe_ratio = (portfolio_returns.mean() / portfolio_returns.std()) * np.sqrt(252)
+
+    # Max drawdown
+    cumulative_max = cumulative_returns.cummax()
+    drawdown = (cumulative_returns - cumulative_max) / cumulative_max
+    max_drawdown = drawdown.min()
 
     # Plot
     print("Plotting performance...")
@@ -99,6 +110,9 @@ def backtest_strategy(file_path: str, ticker_a: str, ticker_b: str):
     print("\n--- Backtest Results ---")
     print(f"Pair: ({ticker_a}, {ticker_b})")
     print(f"Total Strategy Return: {total_return:.2%}")
+    print(f"Compound Annual Growth Rate (CAGR): {cagr:.2%}")
+    print(f"Sharpe Ratio: {sharpe_ratio:.2f}")
+    print(f"Maximum Drawdown: {max_drawdown:.2%}")
     print(f"Plot saved to '{plot_filename}'")
     print("------------------------")
 

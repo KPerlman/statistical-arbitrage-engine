@@ -49,7 +49,7 @@ This is still a work in progress. Here's what I'm planning to work on next:
 
 * \[ \] **Add More Performance Metrics:**
 
-  * \[ \] Calculate Sharpe Ratio, Max Drawdown, CAGR, etc.
+  * \[x] ~~Calculate Sharpe Ratio, Max Drawdown, CAGR, etc.~~
 
   * \[ \] Generate a tear sheet for backtest results.
 
