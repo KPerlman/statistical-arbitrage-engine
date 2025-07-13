@@ -20,7 +20,7 @@ I'm mostly using this to learn more about time-series analysis, financial data, 
 
 * **Language:** Python 3
 
-* **Libraries:** pandas, yfinance, statsmodels, matplotlib, seaborn
+* **Libraries:** pandas, yfinance, statsmodels, matplotlib, seaborn, pykalman
 
 ### Project Structure
 
@@ -38,27 +38,4 @@ The project is a pipeline of scripts, each handling one part of the process:
 
 6. `06_optimize_strategy.py`: Takes the best-performing pair and runs a grid search to find the optimal lookback window and z-score threshold. It also outputs a heatmap based on the results.
 
-### Next Steps & To-Do
-
-This is still a work in progress. Here's what I'm planning to work on next:
-
-* [x] ~~Build an event-driven backtester to simulate performance.~~
-* [x] ~~Build a simple backtester.~~
-* [x] ~~Add performance metrics (CAGR, Sharpe, Max Drawdown).~~
-* [x] ~~Include a basic transaction cost model.~~
-* [x] ~~Optimize strategy parameters (window, threshold).~~
-* \[ \] **Improve the Backtester:**
-
-  * \[ \] Add a more realistic cost model (commissions, slippage).
-
-  * \[ \] Implement a proper portfolio manager to track equity and P&L.
-
-* \[ \] **Add More Performance Metrics:**
-
-  * [ ] Implement a more robust portfolio manager to handle capital allocation.
-
-  * [ ] Add more sophisticated risk management (e.g., stop-loss based on spread divergence).
-
-* \[ \] **(Future Idea) Dynamic Modeling:**
-
-  * \[ \] Look into using a Kalman Filter to dynamically update the hedge ratio instead of using a static one from the initial regression. This should be a better model for a relationship that changes over time.
+7. `07_kalman_filter_backtest.py`: Implements a more advanced backtest using a Kalman Filter to dynamically calculate the hedge ratio over time.
